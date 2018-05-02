@@ -49,7 +49,7 @@ public class LastValueHolderTest {
         assertTrue(instance.getValue(new Vector2f(0, 1f)).equals(new Vector2f(0,1f)));
     }
     @Test
-    public void testGetInValidValue() {
+    public void testGetInvalidValue() {
         LastValueHolder<Vector2f> instance = new LastValueHolder<>((value) -> {
             return !value.equals(new Vector2f(0, 0));
         });
@@ -57,6 +57,15 @@ public class LastValueHolderTest {
         assertTrue(instance.getValue(new Vector2f(0, 0f)).equals(new Vector2f(0,1f)));
         assertFalse(instance.getValue(new Vector2f(0, 0f)).equals(new Vector2f(0,0)));
     }
+    @Test
+    public void testGetDefaultValue() {
+        LastValueHolder<Vector2f> instance = new LastValueHolder<>((value) -> {
+            return !value.equals(new Vector2f(0, 0));
+        }, new Vector2f(1,1));
+        assertTrue(instance.getValue(new Vector2f(0, 0f)).equals(new Vector2f(1,1)));
+    }
+    
+    
     
     
 }

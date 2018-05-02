@@ -12,13 +12,15 @@ import com.jme3.math.Vector3f;
  * @author krzysiek
  */
 public class Character {
+    private SceneManager scene;
     public String name;
     public String modelPath = "Models/Ludek.mesh.xml";
     public float walkSpeed = 2f;
     public MovementState movementState;
-    private LastValueHolder<Vector3f> lookingVectorHolder;
+    private final LastValueHolder<Vector3f> lookingVectorHolder;
     
-    public Character() {
+    public Character(SceneManager sm) {
+        scene = sm;
         movementState = new MovementState();
         lookingVectorHolder = new LastValueHolder<>((Vector3f value) -> !value.equals(new Vector3f(0,0,0)), new Vector3f(1, 0, 0));
     }
@@ -31,5 +33,7 @@ public class Character {
     public void stop() {
     }
     
-    
+    public void hit() {
+        
+    }
 }
