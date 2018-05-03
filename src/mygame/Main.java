@@ -51,7 +51,7 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_P));
-        inputManager.addListener(new InputListener(character), "Left", "Right", "Up", "Down");
+        inputManager.addListener(new InputListener(character), "Left", "Right", "Up", "Down", "Attack");
 
         
         map = assetManager.loadModel("Models/Mapka.mesh.xml");
