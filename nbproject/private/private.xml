@@ -4,11 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/krzysiek/małpa/małpka/src/mygame/Main.java</file>
+            <file>file:/home/krzysiek/małpa/małpka/src/mygame/SceneManager.java</file>
+            <file>file:/home/krzysiek/małpa/małpka/src/mygame/ActionInputListener.java</file>
             <file>file:/home/krzysiek/małpa/małpka/src/mygame/LastValueHolder.java</file>
             <file>file:/home/krzysiek/małpa/małpka/src/mygame/MovementState.java</file>
             <file>file:/home/krzysiek/małpa/małpka/tests/mygame/LastValueHolderTest.java</file>
+            <file>file:/home/krzysiek/małpa/małpka/src/mygame/Character.java</file>
             <file>file:/home/krzysiek/małpa/małpka/src/mygame/SmoothVectorTransition.java</file>
-            <file>file:/home/krzysiek/małpa/małpka/src/mygame/InputListener.java</file>
+            <file>file:/home/krzysiek/małpa/małpka/src/mygame/MovementInputListener.java</file>
+            <file>file:/home/krzysiek/małpa/małpka/src/mygame/Enemy.java</file>
         </group>
     </open-files>
 </project-private>

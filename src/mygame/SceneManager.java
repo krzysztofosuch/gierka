@@ -11,6 +11,8 @@ import com.jme3.scene.Spatial;
 import java.util.AbstractMap;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,38 +20,49 @@ import java.util.Random;
  * @author krzysiek
  */
 public class SceneManager {
-    private AssetManager assetManager;
-    private Node rootNode;
-    private AbstractMap<String, Spatial> elements;
+    private final AssetManager assetManager;
+    private final Node rootNode;
+    
+    private final List<SceneElement> activeElements;
     public SceneManager(AssetManager am, Node rootNode) {
+        this(am, rootNode, new LinkedList<>());
+    }
+    public SceneManager(AssetManager am, Node rootNode, List<SceneElement> elements) {
         this.assetManager = am;
         this.rootNode = rootNode;
-        elements = new HashMap<>();
+        activeElements = elements;
     }
-    public void addNode(String key, Spatial element) {
-        this.elements.put(key, element);
+    public AssetManager getAssetManager(){
+        return this.assetManager;
     }
-    public String addNodeWithAutoKey(Spatial element, String keyStart) {
-        String key;
-        do {
-            key = randomKey(14);
-        } while (this.elements.containsKey(key));
-        addNode(key, element);
-        return key;
+    
+    public SceneManager attachAndGetManager(Spatial node) {
+        attach(node);
+        return new SceneManager(assetManager, (Node)node, activeElements);
     }
-    public Spatial getNodeByKey(String key) {
-        return this.elements.get(key);
+    public int attach(Spatial s) {
+        return rootNode.attachChild(s);
     }
-    public static String randomKey(int length) {
-        Random r = new Random();
-        StringBuilder sb = new StringBuilder();
-        char random_char ;
-        for(int i=0; i<length;i++)
-        { 
-            random_char = (char) (48 + r.nextInt(74));
-            sb.append(random_char);
+    
+    public int attach(SceneElement s) {
+        activeElements.add(s);
+        System.out.printf("add to %s\n", System.identityHashCode(activeElements));
+        return rootNode.attachChild(s.getSpatial());
+    }
+    
+    public Node getRootNode() {
+        return rootNode;
+    }
+    public void updateActiveElements(float tpf) {
+        //System.out.printf("iterate %s\n", System.identityHashCode(activeElements));
+        for (SceneElement se: activeElements) {
+            se.decreaseTTL(tpf);
+            if (!se.isStillAlive()) {
+                this.activeElements.remove(se);
+                Spatial s = se.getSpatial();
+                s.getParent().detachChild(s);
+                System.out.println("KILLED SPATIAL");
+            }
         }
-        return sb.toString();
     }
-
 }

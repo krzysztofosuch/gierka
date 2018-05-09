@@ -11,9 +11,9 @@ import com.jme3.input.controls.ActionListener;
  *
  * @author krzysiek
  */
-public class InputListener implements ActionListener {
+public class MovementInputListener implements ActionListener {
     Character character;
-    public InputListener(Character c) {
+    public MovementInputListener(Character c) {
         this.character = c;
     }
     @Override
