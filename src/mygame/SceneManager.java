@@ -47,6 +47,7 @@ public class SceneManager {
     public int attach(SceneElement s) {
         activeElements.add(s);
         System.out.printf("add to %s\n", System.identityHashCode(activeElements));
+//        SceneElementConfig config = s.getConfig();
         return rootNode.attachChild(s.getSpatial());
     }
     
