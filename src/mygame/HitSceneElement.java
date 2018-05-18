@@ -25,4 +25,8 @@ public class HitSceneElement extends SceneElement {
         this.hit.attacker.removeHit(this);
     }
     
+    public Hit getHit() {
+        return this.hit;
+    }
+    
 }
