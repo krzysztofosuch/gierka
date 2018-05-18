@@ -33,8 +33,6 @@ public class Enemy extends SceneNode {
     
     @Override
     public SceneNodeConfig getConfig() {
-        return new SceneNodeConfig() {
-            boolean hpIndicator = true;
-        };
+        return new SceneNodeConfig(true,0);
     }
 }
