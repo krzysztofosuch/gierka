@@ -23,7 +23,6 @@ public class SceneElement {
     public SceneElement(Spatial s, SceneNodeConfig config) {
         spatial = s;
         this.ttl = config.ttl;
-        System.out.printf("got ttl: %s\n", ttl);
     }
     public void setVelocity(Vector3f velocity) {
         this.velocity = velocity;
@@ -36,12 +35,13 @@ public class SceneElement {
     }
     public void decreaseTTL(float tpf) {
         this.ttl = this.ttl-tpf;
-        System.out.printf("ttl left: %s\n", ttl);
     }
     public boolean isStillAlive() {
         return ttl > 0;
     }   
-    
+    public void zeroTTL() {
+        this.ttl = 0;
+    }
     public void die() {
     
     }

@@ -116,6 +116,7 @@ public class Main extends SimpleApplication {
                         attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
                         if (collision.size() > 0) {
                             o.gotHit(attack.getHit().power);
+                            attack.zeroTTL();
                             if(o.isDead()){
                                 i.remove();
                             }
