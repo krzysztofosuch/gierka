@@ -9,6 +9,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,6 +25,7 @@ public class Character extends SceneNode {
     public float walkSpeed = 2f;
     public MovementState movementState;
     private final LastValueHolder<Vector3f> lookingVectorHolder;
+    private ArrayList<SceneElement> attacks;
     Spatial model;
     public Character(SceneManager sm) {
         AssetManager assetManager;
@@ -34,6 +37,8 @@ public class Character extends SceneNode {
         scene = sm;
         model.setLocalScale(0.2f);
         model.setLocalTranslation(0, 0.5f, 0);
+        attacks = new ArrayList<SceneElement>();
+                
         movementState = new MovementState();
         lookingVectorHolder = new LastValueHolder<>((Vector3f value) -> !value.equals(new Vector3f(0,0,0)), new Vector3f(1, 0, 0));
     }
@@ -54,7 +59,9 @@ public class Character extends SceneNode {
         System.out.println("HICIOR!");
         Spatial hitModel = scene.getAssetManager().loadModel(Math.random() > 0.5 ? hit1Path : hit2Path);
         hitModel.setLocalTransform(model.getLocalTransform());
-        scene.attach(new SceneElement(hitModel, getHitConfig()));
+        SceneElement element = new HitSceneElement(hitModel, getHitConfig(),  this);
+        scene.attach(element);
+        attacks.add(element);
     }
     
     
@@ -72,5 +79,13 @@ public class Character extends SceneNode {
     
     public SceneNodeConfig getHitConfig() {
         return new SceneNodeConfig(false, 0.5f);
+    }
+
+    public void removeHit(HitSceneElement aThis) {
+        attacks.remove(aThis);
+    }
+    
+    public List<SceneElement> getAttacks() {
+        return this.attacks;
     }
 }

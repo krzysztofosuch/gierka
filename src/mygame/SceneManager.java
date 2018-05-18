@@ -59,6 +59,7 @@ public class SceneManager {
         for (SceneElement se: activeElements) {
             se.decreaseTTL(tpf);
             if (!se.isStillAlive()) {
+                se.die();
                 this.activeElements.remove(se);
                 Spatial s = se.getSpatial();
                 s.getParent().detachChild(s);

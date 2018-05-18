@@ -33,4 +33,8 @@ public class SceneElement {
     public boolean isStillAlive() {
         return ttl > 0;
     }   
+    
+    public void die() {
+    
+    }
 }

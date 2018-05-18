@@ -96,9 +96,11 @@ public class Main extends SimpleApplication {
             scene.updateActiveElements(tpf);
             for (Enemy o : oponents) {
                 CollisionResults collision = new CollisionResults();
-                player.getWorldBound().collideWith(o.model.getWorldBound(), collision);
-                if (collision.size() > 0) {
-                    o.gotHit(character.getHitPower());
+                for (SceneElement attack : character.getAttacks()){
+                    attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
+                    if (collision.size() > 0) {
+                        o.gotHit(character.getHitPower());
+                    }
                 }
             }
         } catch (NullPointerException e) {
