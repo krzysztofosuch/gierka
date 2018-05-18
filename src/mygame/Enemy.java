@@ -15,13 +15,18 @@ import com.jme3.scene.Spatial;
  */
 public class Enemy extends SceneNode {
     AssetManager assetManager;
+    
+    Countdown vulnerable;
+    
     public Enemy(AssetManager am) {
         assetManager = am;
     }
     public String modelPath = "Models/Mobek.mesh.xml";
     
     public Spatial model;
+    
     public void gotHit(int power) {
+        this.vulnerable = new Countdown(0.5f);
         Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Diffuse", ColorRGBA.Red);
@@ -34,5 +39,15 @@ public class Enemy extends SceneNode {
     @Override
     public SceneNodeConfig getConfig() {
         return new SceneNodeConfig(true,0);
+    }
+
+    public void setState(int i) {
+        if(i == 0){
+            Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+            mat.setBoolean("UseMaterialColors", true);
+            mat.setColor("Diffuse", ColorRGBA.White);
+            mat.setColor("Specular", ColorRGBA.White);
+            model.setMaterial(mat);
+        }
     }
 }

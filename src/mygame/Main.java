@@ -95,6 +95,13 @@ public class Main extends SimpleApplication {
 
             scene.updateActiveElements(tpf);
             for (Enemy o : oponents) {
+                if(o.vulnerable != null){
+                    o.vulnerable.countTime(tpf);
+                    if(o.vulnerable.isReady()){
+                        o.setState(0);
+                    }
+                }
+                
                 CollisionResults collision = new CollisionResults();
                 for (SceneElement attack : character.getAttacks()){
                     attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
