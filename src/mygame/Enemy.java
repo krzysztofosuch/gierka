@@ -20,10 +20,13 @@ public class Enemy extends SceneNode {
     
     public Enemy(AssetManager am) {
         assetManager = am;
+        this.hp = 100 + (int) ((Math.random() * 30) -15);
     }
     public String modelPath = "Models/Mobek.mesh.xml";
     
     public Spatial model;
+    
+    private int hp = 100;
     
     public void gotHit(int power) {
         this.vulnerable = new Countdown(0.5f);
@@ -34,7 +37,14 @@ public class Enemy extends SceneNode {
         model.setMaterial(mat);
         hp -= power;
     }   
-    private int hp = 100;
+    
+    public boolean isDead(){
+        if(this.hp <= 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     @Override
     public SceneNodeConfig getConfig() {

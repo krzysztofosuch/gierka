@@ -15,6 +15,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 /**
@@ -95,7 +96,9 @@ public class Main extends SimpleApplication {
             getCamera().lookAt(player.getWorldTranslation(), new Vector3f(0, 1, 0));
 
             scene.updateActiveElements(tpf);
-            for (Enemy o : oponents) {
+            Iterator<Enemy> i = oponents.iterator();
+            while(i.hasNext()) {
+                Enemy o = i.next();
                 if(o.vulnerable != null){
                     o.vulnerable.countTime(tpf);
                     if(o.vulnerable.isReady()){
@@ -110,6 +113,9 @@ public class Main extends SimpleApplication {
                     attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
                     if (collision.size() > 0) {
                         o.gotHit(character.getHitPower());
+                        if(o.isDead()){
+                           i.remove();
+                        }
                     }
                 }
             }
