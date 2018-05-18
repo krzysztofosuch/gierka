@@ -22,8 +22,10 @@ public class ActionInputListener implements ActionListener {
             switch (name) {
                 case "Attack":
                     character.hit();
+                    break;
                 case "Attack2":
                     character.distanceHit();
+                    break;
                     
             }
         } 
