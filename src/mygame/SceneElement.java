@@ -6,6 +6,8 @@
 package mygame;
 
 import com.jme3.scene.Spatial;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -14,25 +16,21 @@ import com.jme3.scene.Spatial;
 public class SceneElement {
     private Spatial spatial;
     private float ttl;
-    public SceneElement(Spatial s) {
+    SceneNodeConfig config;
+    public SceneElement(Spatial s, SceneNodeConfig config) {
         spatial = s;
+        this.ttl = config.ttl;
+        System.out.printf("got ttl: %s\n", ttl);
     }
-    public SceneElement(Spatial s, float ttl) {
-        this(s);
-        this.ttl = ttl;
-        System.out.printf("New element with ttl %s\n", ttl);
-        
-    }
+
     public Spatial getSpatial() {
         return spatial;
     }
     public void decreaseTTL(float tpf) {
-        System.out.printf("TTL %s decreased by %s\n",ttl, tpf);
         this.ttl = this.ttl-tpf;
-        System.out.printf("TTL: %s\n",this.ttl);
-        //System.out.printf("TTL decreased to %s\n",ttl);
+        System.out.printf("ttl left: %s\n", ttl);
     }
     public boolean isStillAlive() {
         return ttl > 0;
-    }
+    }   
 }
