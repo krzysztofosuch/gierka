@@ -46,8 +46,9 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_P));
+        inputManager.addMapping("Attack2", new KeyTrigger(KeyInput.KEY_O));
         inputManager.addListener(new MovementInputListener(character), "Left", "Right", "Up", "Down");
-        inputManager.addListener(new ActionInputListener(character), "Attack");
+        inputManager.addListener(new ActionInputListener(character), "Attack", "Attack2");
         
         map = assetManager.loadModel("Models/Mapka.mesh.xml");
         map.rotate((float)Math.PI, 0, 0);
@@ -97,6 +98,8 @@ public class Main extends SimpleApplication {
             for (Enemy o : oponents) {
                 CollisionResults collision = new CollisionResults();
                 for (SceneElement attack : character.getAttacks()){
+                    Spatial s = attack.getSpatial();
+                    s.move(attack.getVelocity().mult(tpf));
                     attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
                     if (collision.size() > 0) {
                         o.gotHit(character.getHitPower());

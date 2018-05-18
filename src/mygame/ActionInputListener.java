@@ -19,7 +19,13 @@ public class ActionInputListener implements ActionListener {
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
         if (isPressed) {
-            character.hit();
+            switch (name) {
+                case "Attack":
+                    character.hit();
+                case "Attack2":
+                    character.distanceHit();
+                    
+            }
         } 
     }
     

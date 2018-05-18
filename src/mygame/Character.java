@@ -22,10 +22,13 @@ public class Character extends SceneNode {
     public String modelPath = "Models/Katalog/meHumanMale.001.mesh.xml";
     public String hit1Path = "Models/Hit1.mesh.xml";
     public String hit2Path = "Models/Hit2.mesh.xml";
+    
+    public String distanceHitPath = "Models/Icosphere.mesh.xml";
+
     public float walkSpeed = 2f;
     public MovementState movementState;
     private final LastValueHolder<Vector3f> lookingVectorHolder;
-    private ArrayList<SceneElement> attacks;
+    private final ArrayList<SceneElement> attacks;
     Spatial model;
     public Character(SceneManager sm) {
         AssetManager assetManager;
@@ -64,6 +67,16 @@ public class Character extends SceneNode {
         attacks.add(element);
     }
     
+    public void distanceHit() {
+        System.out.println("DISTANCE HICIOR!");
+        Spatial hitModel = scene.getAssetManager().loadModel(distanceHitPath);
+        hitModel.setLocalTransform(model.getLocalTransform());
+        SceneElement element = new HitSceneElement(hitModel, getDistanceHitConfig(),  this);
+        element.setVelocity(getLookingVector());
+        scene.attach(element);
+        attacks.add(element);
+    }
+    
     
     private int hp = 100;
     public void gotHit(int power) {
@@ -78,7 +91,11 @@ public class Character extends SceneNode {
     }
     
     public SceneNodeConfig getHitConfig() {
-        return new SceneNodeConfig(false, 0.5f);
+        return new SceneNodeConfig(false, 0.2f);
+    }
+    
+    public SceneNodeConfig getDistanceHitConfig() {
+        return new SceneNodeConfig(false, 4f);
     }
 
     public void removeHit(HitSceneElement aThis) {
