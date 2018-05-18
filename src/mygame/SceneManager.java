@@ -9,6 +9,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.AbstractMap;
+import java.util.ConcurrentModificationException;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -56,15 +57,20 @@ public class SceneManager {
     }
     public void updateActiveElements(float tpf) {
         //System.out.printf("iterate %s\n", System.identityHashCode(activeElements));
-        for (SceneElement se: activeElements) {
-            se.decreaseTTL(tpf);
-            if (!se.isStillAlive()) {
-                se.die();
-                this.activeElements.remove(se);
-                Spatial s = se.getSpatial();
-                s.getParent().detachChild(s);
-                System.out.println("KILLED SPATIAL");
+        try {
+
+            for (SceneElement se: activeElements) {
+                se.decreaseTTL(tpf);
+                if (!se.isStillAlive()) {
+                    se.die();
+                    this.activeElements.remove(se);
+                    Spatial s = se.getSpatial();
+                    s.getParent().detachChild(s);
+                    System.out.println("KILLED SPATIAL");
+                }
             }
+        } catch (ConcurrentModificationException e) {
+            System.out.println("ConcurrentModificationException, whatever");
         }
     }
 }
