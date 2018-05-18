@@ -97,11 +97,11 @@ public class Main extends SimpleApplication {
             scene.updateActiveElements(tpf);
             Iterator<Enemy> i = oponents.iterator();
             while(i.hasNext()) {
-                Enemy o = i.next();
-                if(o.vulnerable != null){
-                    o.vulnerable.countTime(tpf);
-                    if(o.vulnerable.isReady()){
-                        o.setState(0);
+                Enemy enemy = i.next();
+                if(enemy.vulnerable != null){
+                    enemy.vulnerable.countTime(tpf);
+                    if(enemy.vulnerable.isReady()){
+                        enemy.setState(0);
                     }
                 }
                 
@@ -113,15 +113,15 @@ public class Main extends SimpleApplication {
                         if (!attack.isHamless()) {
                             Spatial s = attack.getSpatial();
                             s.move(attack.getVelocity().mult(tpf));
-                            attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
+                            attack.getSpatial().collideWith(enemy.model.getWorldBound(), collision);
                             if (collision.size() > 0) {
-                                o.gotHit(attack.getHit().power);
+                                enemy.gotHit(attack.getHit().power);
                                 attack.setHarmless();
                                 attack.setTTL(0.1f);
-                                if(o.isDead()){
-                                    if (oponents.contains(o)) {
+                                if(enemy.isDead()){
+                                    if (oponents.contains(enemy)) {
                                         i.remove();
-                                        rootNode.detachChild(o.model);
+                                        rootNode.detachChild(enemy.model);
                                     }
                                 }
 
