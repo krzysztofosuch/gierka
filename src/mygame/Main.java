@@ -104,12 +104,15 @@ public class Main extends SimpleApplication {
                 }
                 
                 CollisionResults collision = new CollisionResults();
-                for (SceneElement attack : character.getAttacks()){
-                    Spatial s = attack.getSpatial();
-                    s.move(attack.getVelocity().mult(tpf));
-                    attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
-                    if (collision.size() > 0) {
-                        o.gotHit(character.getHitPower());
+                for (SceneElement a : character.getAttacks()){
+                    if (a instanceof HitSceneElement) {
+                        HitSceneElement attack = (HitSceneElement)a;
+                        Spatial s = attack.getSpatial();
+                        s.move(attack.getVelocity().mult(tpf));
+                        attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
+                        if (collision.size() > 0) {
+                            o.gotHit(attack.getHit().power);
+                        }
                     }
                 }
             }

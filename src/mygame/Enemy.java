@@ -33,6 +33,7 @@ public class Enemy extends SceneNode {
         mat.setColor("Specular", ColorRGBA.Red);
         model.setMaterial(mat);
         hp -= power;
+        System.out.println("Got hit by "+power);
     }   
     private int hp = 100;
     
