@@ -119,6 +119,7 @@ public class Main extends SimpleApplication {
                             attack.zeroTTL();
                             if(o.isDead()){
                                 i.remove();
+                                rootNode.detachChild(o.model);
                             }
                         }
                     }
