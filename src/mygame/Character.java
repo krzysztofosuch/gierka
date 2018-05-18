@@ -19,7 +19,7 @@ import java.util.List;
 public class Character extends SceneNode {
     private SceneManager scene;
     public String name;
-    public String modelPath = "Models/character.j3o";
+    public String modelPath = "Models/Katalog/meHumanMale.001.mesh.xml";
     public String hit1Path = "Models/Hit1.mesh.xml";
     public String hit2Path = "Models/Hit2.mesh.xml";
     public float walkSpeed = 2f;
