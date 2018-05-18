@@ -57,7 +57,6 @@ public class Main extends SimpleApplication {
         map.setMaterial(m);
         
         rootNode.attachChild(map);
-        
         for (int i = 0;i<mobs_number;i++) {
             Enemy o = new Enemy(assetManager);
             o.model = assetManager.loadModel(o.modelPath);
@@ -111,14 +110,18 @@ public class Main extends SimpleApplication {
                 for (SceneElement a : character.getAttacks()){
                     if (a instanceof HitSceneElement) {
                         HitSceneElement attack = (HitSceneElement)a;
-                        Spatial s = attack.getSpatial();
-                        s.move(attack.getVelocity().mult(tpf));
-                        attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
-                        if (collision.size() > 0) {
-                            o.gotHit(attack.getHit().power);
-                            attack.zeroTTL();
-                            if(o.isDead()){
-                                i.remove();
+                        if (!attack.isHamless()) {
+                            Spatial s = attack.getSpatial();
+                            s.move(attack.getVelocity().mult(tpf));
+                            attack.getSpatial().collideWith(o.model.getWorldBound(), collision);
+                            if (collision.size() > 0) {
+                                o.gotHit(attack.getHit().power);
+                                attack.setHarmless();
+                                attack.setTTL(0.1f);
+                                if(o.isDead()){
+                                    i.remove();
+                                    rootNode.detachChild(o.model);
+                                }
                             }
                         }
                     }

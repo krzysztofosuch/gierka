@@ -39,10 +39,10 @@ public class SceneElement {
     public boolean isStillAlive() {
         return ttl > 0;
     }   
-    public void zeroTTL() {
-        this.ttl = 0;
-    }
     public void die() {
     
+    }
+    public void setTTL(float ttl) {
+        this.ttl = ttl;
     }
 }

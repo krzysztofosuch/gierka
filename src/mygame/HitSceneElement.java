@@ -14,7 +14,7 @@ import com.jme3.scene.Spatial;
 public class HitSceneElement extends SceneElement {
     
     private final Hit hit;
-    
+    private boolean harmless = false;
     public HitSceneElement(Spatial s, SceneNodeConfig config, Hit hit) {
         super(s, config);
         this.hit = hit;
@@ -27,6 +27,14 @@ public class HitSceneElement extends SceneElement {
     
     public Hit getHit() {
         return this.hit;
+    }
+    
+    public void setHarmless() {
+        this.harmless = true;
+    }
+    
+    public boolean isHamless() {
+        return this.harmless;
     }
     
 }
