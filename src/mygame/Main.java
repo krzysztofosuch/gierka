@@ -41,8 +41,6 @@ public class Main extends SimpleApplication {
         oponents = new ArrayList<>(mobs_number);
         Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         character = new Character(scene);
-        character.name = "Stefek";
-
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
@@ -87,23 +85,25 @@ public class Main extends SimpleApplication {
     
     @Override
     public void simpleUpdate(float tpf) {
-        
-        Vector3f inputVector = character.movementState.getInputVector();
-        Spatial player = character.getModel();
-        player.move(inputVector.mult(character.walkSpeed*tpf));
-        player.lookAt(player.getWorldTranslation().add(character.getLookingVector()), new Vector3f(0, 1, 0));
-        getCamera().setLocation(player.getWorldTranslation().add(new Vector3f(5, 2.5f, 0)));
-        getCamera().lookAt(player.getWorldTranslation(), new Vector3f(0, 1, 0));
-        
-        scene.updateActiveElements(tpf);
-        for (Enemy o : oponents) {
-            CollisionResults collision = new CollisionResults();
-            player.collideWith(o.model.getWorldBound(), collision);
-            if (collision.size() > 0) {
-                o.gotHit();
+        try {
+            Vector3f inputVector = character.movementState.getInputVector();
+            Spatial player = character.getModel();
+            player.move(inputVector.mult(character.walkSpeed*tpf));
+            player.lookAt(player.getWorldTranslation().add(character.getLookingVector()), new Vector3f(0, 1, 0));
+            getCamera().setLocation(player.getWorldTranslation().add(new Vector3f(5, 2.5f, 0)));
+            getCamera().lookAt(player.getWorldTranslation(), new Vector3f(0, 1, 0));
+
+            scene.updateActiveElements(tpf);
+            for (Enemy o : oponents) {
+                CollisionResults collision = new CollisionResults();
+                player.getWorldBound().collideWith(o.model.getWorldBound(), collision);
+                if (collision.size() > 0) {
+                    o.gotHit(character.getHitPower());
+                }
             }
+        } catch (NullPointerException e) {
+            System.out.println("NPE");
         }
-        
         
     }
 

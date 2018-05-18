@@ -13,7 +13,7 @@ import com.jme3.scene.Spatial;
  *
  * @author krzysiek
  */
-public class Enemy {
+public class Enemy extends SceneNode {
     AssetManager assetManager;
     public Enemy(AssetManager am) {
         assetManager = am;
@@ -21,11 +21,18 @@ public class Enemy {
     public String modelPath = "Models/Mobek.mesh.xml";
     
     public Spatial model;
-    public void gotHit() {
+    public void gotHit(int power) {
         Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Diffuse", ColorRGBA.Red);
         mat.setColor("Specular", ColorRGBA.Red);
         model.setMaterial(mat);
+        hp -= power;
+    }   
+    private int hp = 100;
+    
+    @Override
+    public SceneNodeConfig getConfig() {
+        return new SceneNodeConfig(true,0);
     }
 }
