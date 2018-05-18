@@ -62,7 +62,7 @@ public class Character extends SceneNode {
         System.out.println("HICIOR!");
         Spatial hitModel = scene.getAssetManager().loadModel(Math.random() > 0.5 ? hit1Path : hit2Path);
         hitModel.setLocalTransform(model.getLocalTransform());
-        SceneElement element = new HitSceneElement(hitModel, getHitConfig(),  this);
+        SceneElement element = new HitSceneElement(hitModel, getHitConfig(),  new Hit(getHitPower(), this));
         scene.attach(element);
         attacks.add(element);
     }
@@ -71,7 +71,7 @@ public class Character extends SceneNode {
         System.out.println("DISTANCE HICIOR!");
         Spatial hitModel = scene.getAssetManager().loadModel(distanceHitPath);
         hitModel.setLocalTransform(model.getLocalTransform());
-        SceneElement element = new HitSceneElement(hitModel, getDistanceHitConfig(),  this);
+        SceneElement element = new HitSceneElement(hitModel, getDistanceHitConfig(),  new Hit(getDistanceHitPower(), this));
         element.setVelocity(getLookingVector());
         scene.attach(element);
         attacks.add(element);
@@ -84,6 +84,9 @@ public class Character extends SceneNode {
     }
     public int getHitPower(){
         return (int)Math.round(10+(Math.random()*20));
+    }
+    public int getDistanceHitPower(){
+        return (int)Math.round(5+(Math.random()*5));
     }
     @Override
     public SceneNodeConfig getConfig() {

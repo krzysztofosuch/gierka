@@ -13,16 +13,16 @@ import com.jme3.scene.Spatial;
  */
 public class HitSceneElement extends SceneElement {
     
-    private Character attacker;
+    private final Hit hit;
     
-    public HitSceneElement(Spatial s, SceneNodeConfig config, Character attacker) {
+    public HitSceneElement(Spatial s, SceneNodeConfig config, Hit hit) {
         super(s, config);
-        this.attacker = attacker;
+        this.hit = hit;
     }
     
     @Override
     public void die(){
-        this.attacker.removeHit(this);
+        this.hit.attacker.removeHit(this);
     }
     
 }
