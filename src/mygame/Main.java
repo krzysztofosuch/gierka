@@ -119,8 +119,10 @@ public class Main extends SimpleApplication {
                                 attack.setHarmless();
                                 attack.setTTL(0.1f);
                                 if(o.isDead()){
-                                    i.remove();
-                                    rootNode.detachChild(o.model);
+                                    if (oponents.contains(o)) {
+                                        i.remove();
+                                        rootNode.detachChild(o.model);
+                                    }
                                 }
 
                             }
