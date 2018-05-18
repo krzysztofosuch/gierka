@@ -67,16 +67,10 @@ public class Character extends SceneNode {
     }
     @Override
     public SceneNodeConfig getConfig() {
-        return new SceneNodeConfig() {
-            public boolean hpIndicator = true;
-            public float ttl = 0.0f;
-        };
+        return new SceneNodeConfig(true, 0);
     }
     
     public SceneNodeConfig getHitConfig() {
-        return new SceneNodeConfig() {
-            public boolean hpIndicator = false;
-            public float ttl = 1.0f;
-        };
+        return new SceneNodeConfig(false, 0.5f);
     }
 }

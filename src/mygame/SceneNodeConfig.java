@@ -9,12 +9,15 @@ package mygame;
  *
  * @author krzysiek
  */
-public abstract class SceneNodeConfig {
-    boolean hpIndicator = true;
-    float ttl;
-    
+public class SceneNodeConfig {
+    public boolean hpIndicator = true;
+    public float ttl;
+    public SceneNodeConfig(boolean hpIndicator, float ttl) {
+        this.hpIndicator = hpIndicator;
+        this.ttl = ttl;
+    }
     public static SceneNodeConfig blank() {
-        return new SceneNodeConfig() {
+        return new SceneNodeConfig(false, 0) {
         };
     }
 }
