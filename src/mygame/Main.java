@@ -122,6 +122,7 @@ public class Main extends SimpleApplication {
                                     i.remove();
                                     rootNode.detachChild(o.model);
                                 }
+
                             }
                         }
                     }
