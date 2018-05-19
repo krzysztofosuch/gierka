@@ -17,7 +17,7 @@ import java.util.List;
  * @author krzysiek
  */
 public class Character extends SceneNode {
-    private SceneManager scene;
+    protected SceneManager scene;
     public String name;
     public String modelPath = "Models/Katalog/meHumanMale.001.mesh.xml";
     public String hit1Path = "Models/Hit1.mesh.xml";

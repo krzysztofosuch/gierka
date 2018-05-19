@@ -58,7 +58,7 @@ public class Main extends SimpleApplication {
         
         rootNode.attachChild(map);
         for (int i = 0;i<mobs_number;i++) {
-            Enemy o = new Enemy(assetManager);
+            Enemy o = new Enemy(scene);
             o.model = assetManager.loadModel(o.modelPath);
             o.model.setMaterial(mat);
             o.model.setLocalScale(0.2f);
