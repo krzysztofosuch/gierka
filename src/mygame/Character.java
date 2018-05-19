@@ -48,8 +48,9 @@ public class Character extends SceneNode implements AnimEventListener {
         movementState = new MovementState();
         lookingVectorHolder = new LastValueHolder<>((Vector3f value) -> !value.equals(new Vector3f(0,0,0)), new Vector3f(1, 0, 0));
         control = model.getControl(AnimControl.class);
+        control.addListener(this);
         channel = control.createChannel();
-        channel.setAnim("Idle");
+        channel.setAnim("Idle", 0.50f);
         
     }
     public Spatial getModel() {
@@ -78,7 +79,7 @@ public class Character extends SceneNode implements AnimEventListener {
     public void stop() {
         channel.setAnim("Idle", 0.50f);
         channel.setLoopMode(LoopMode.Loop);
-        channel.setSpeed(2f);
+        channel.setSpeed(1f);
     }
     
     public void hit() {
