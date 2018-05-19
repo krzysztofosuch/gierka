@@ -6,6 +6,7 @@
 package mygame;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.animation.*;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -16,10 +17,12 @@ import java.util.List;
  *
  * @author krzysiek
  */
-public class Character extends SceneNode {
+public class Character extends SceneNode implements AnimEventListener {
     private SceneManager scene;
+    private AnimControl control;
+    private AnimChannel channel;
     public String name;
-    public String modelPath = "Models/Katalog/meHumanMale.001.mesh.xml";
+    public String modelPath = "Models/Player/player.mesh.xml";
     public String hit1Path = "Models/Hit1.mesh.xml";
     public String hit2Path = "Models/Hit2.mesh.xml";
     
@@ -39,11 +42,15 @@ public class Character extends SceneNode {
         this.model = model;
         scene = sm;
         model.setLocalScale(0.2f);
-        model.setLocalTranslation(0, 0.5f, 0);
+        model.setLocalTranslation(0, 0, 0);
         attacks = new ArrayList<SceneElement>();
                 
         movementState = new MovementState();
         lookingVectorHolder = new LastValueHolder<>((Vector3f value) -> !value.equals(new Vector3f(0,0,0)), new Vector3f(1, 0, 0));
+        control = model.getControl(AnimControl.class);
+        channel = control.createChannel();
+        channel.setAnim("Idle");
+        
     }
     public Spatial getModel() {
         return model;
@@ -52,10 +59,26 @@ public class Character extends SceneNode {
     public Vector3f getLookingVector() {
         return lookingVectorHolder.getValue(movementState.getInputVector());
     }
+    
+    @Override
+    public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
+    }
+    
+    @Override
+    public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
+    }
+
+    
+    
     public void walk() {
+        channel.setAnim("Walk", 0.50f);
+        channel.setLoopMode(LoopMode.Loop);
     }
     
     public void stop() {
+        channel.setAnim("Idle", 0.50f);
+        channel.setLoopMode(LoopMode.Loop);
+        channel.setSpeed(2f);
     }
     
     public void hit() {
