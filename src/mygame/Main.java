@@ -105,7 +105,7 @@ public class Main extends SimpleApplication {
                     }
                 }
                 
-                CollisionResults collision = new CollisionResults();
+
 
                 for (SceneElement a : character.getAttacks()){
                     if (a instanceof HitSceneElement) {
@@ -113,6 +113,7 @@ public class Main extends SimpleApplication {
                         if (!attack.isHamless()) {
                             Spatial s = attack.getSpatial();
                             s.move(attack.getVelocity().mult(tpf));
+                            CollisionResults collision = new CollisionResults();
                             attack.getSpatial().collideWith(enemy.model.getWorldBound(), collision);
                             if (collision.size() > 0) {
                                 enemy.gotHit(attack.getHit().power);

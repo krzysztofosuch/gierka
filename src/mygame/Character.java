@@ -22,7 +22,7 @@ public class Character extends SceneNode implements AnimEventListener {
     private AnimControl control;
     private AnimChannel channel;
     public String name;
-    public String modelPath = "Models/Player/player.mesh.xml";
+    public String modelPath = "Models/Player/Cube.001.mesh.xml";
     public String hit1Path = "Models/Hit1.mesh.xml";
     public String hit2Path = "Models/Hit2.mesh.xml";
     
@@ -86,6 +86,7 @@ public class Character extends SceneNode implements AnimEventListener {
         System.out.println("HICIOR!");
         Spatial hitModel = scene.getAssetManager().loadModel(Math.random() > 0.5 ? hit1Path : hit2Path);
         hitModel.setLocalTransform(model.getLocalTransform());
+        hitModel.setLocalTranslation(model.getLocalTranslation().add(new Vector3f(0, 0.2f, 0)));
         SceneElement element = new HitSceneElement(hitModel, getHitConfig(),  new Hit(getHitPower(), this));
         scene.attach(element);
         attacks.add(element);
@@ -95,6 +96,7 @@ public class Character extends SceneNode implements AnimEventListener {
         System.out.println("DISTANCE HICIOR!");
         Spatial hitModel = scene.getAssetManager().loadModel(distanceHitPath);
         hitModel.setLocalTransform(model.getLocalTransform());
+        hitModel.setLocalTranslation(model.getLocalTranslation().add(new Vector3f(0, 0.2f, 0)));
         SceneElement element = new HitSceneElement(hitModel, getDistanceHitConfig(),  new Hit(getDistanceHitPower(), this));
         element.setVelocity(getLookingVector());
         scene.attach(element);
