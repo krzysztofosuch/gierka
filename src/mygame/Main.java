@@ -51,6 +51,11 @@ public class Main extends SimpleApplication {
         inputManager.addListener(new MovementInputListener(character), "Left", "Right", "Up", "Down");
         inputManager.addListener(new ActionInputListener(character), "Attack", "Attack2");
         
+        //dev only 
+        inputManager.addMapping("GenerateEnemy", new KeyTrigger(KeyInput.KEY_F3));
+        inputManager.addListener(new DevToolkit(scene), "GenerateEnemy");
+
+        
         map = assetManager.loadModel("Models/Mapka.mesh.xml");
         map.rotate((float)Math.PI, 0, 0);
         Material m = mat.clone();
