@@ -28,7 +28,7 @@ public class SceneElement {
         this.velocity = velocity;
     }
     public Vector3f getVelocity() {
-        return this.velocity == null ? new Vector3f(0,0,0) : this.velocity;
+        return this.velocity == null ? new Vector3f(0,0,0) : this.velocity.mult(5.0f);
     }
     public Spatial getSpatial() {
         return spatial;

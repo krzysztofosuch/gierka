@@ -32,7 +32,9 @@ public class MovementInputListener implements ActionListener {
         if (isPressed) {
             character.walk();
         } else {
-            character.stop();
+            if (!character.movementState.isMoving()) {
+                character.stop();
+            }
         }
     }
     

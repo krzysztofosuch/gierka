@@ -43,4 +43,8 @@ public class MovementState {
         return new Quaternion().fromAngleAxis(getLookingAngle(referenceVector), referenceVector);
         
     }
+    
+    public boolean isMoving() {
+        return (inputEast + inputNorth + inputSouth + inputWest) > 0;
+    }
 }

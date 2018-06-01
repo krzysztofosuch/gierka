@@ -24,7 +24,7 @@ import java.util.Random;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
-    public static final int mobs_number = 5;
+    public static final int mobs_number = 6;
     Random randomizer = new Random();
     SceneManager scene;
     public static void main(String[] args) {
@@ -96,6 +96,16 @@ public class Main extends SimpleApplication {
 
             scene.updateActiveElements(tpf);
             Iterator<Enemy> i = oponents.iterator();
+            for (SceneElement a : character.getAttacks()){
+                if (a instanceof HitSceneElement) {
+                    HitSceneElement attack = (HitSceneElement)a;
+                    if (!attack.isHamless()) {
+                        Spatial s = attack.getSpatial();
+                        s.move(attack.getVelocity().mult(tpf));
+                    }
+                }
+            }
+
             while(i.hasNext()) {
                 Enemy enemy = i.next();
                 if(enemy.vulnerable != null){
@@ -106,13 +116,12 @@ public class Main extends SimpleApplication {
                 }
                 
 
-
                 for (SceneElement a : character.getAttacks()){
                     if (a instanceof HitSceneElement) {
                         HitSceneElement attack = (HitSceneElement)a;
                         if (!attack.isHamless()) {
-                            Spatial s = attack.getSpatial();
-                            s.move(attack.getVelocity().mult(tpf));
+                          //  Spatial s = attack.getSpatial();
+                           // s.move(attack.getVelocity().mult(tpf));
                             CollisionResults collision = new CollisionResults();
                             attack.getSpatial().collideWith(enemy.model.getWorldBound(), collision);
                             if (collision.size() > 0) {
