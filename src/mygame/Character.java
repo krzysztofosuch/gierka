@@ -22,7 +22,7 @@ public class Character extends SceneNode implements AnimEventListener {
     private AnimControl control;
     private AnimChannel channel;
     public String name;
-    public String modelPath = "Models/Player/Cube.001.mesh.xml";
+    public String modelPath = "Models/Player/Cube.001.mesh.j3o";
     public String hit1Path = "Models/Hit1.mesh.xml";
     public String hit2Path = "Models/Hit2.mesh.xml";
     
@@ -35,9 +35,7 @@ public class Character extends SceneNode implements AnimEventListener {
     Spatial model;
     public Character(SceneManager sm) {
         AssetManager assetManager;
-        Material mat = new Material(sm.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
         Spatial model = sm.getAssetManager().loadModel(modelPath);
-        model.setMaterial(mat);
         sm.attachAndGetManager(model);
         this.model = model;
         scene = sm;

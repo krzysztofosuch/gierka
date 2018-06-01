@@ -1,36 +1,36 @@
 <skeleton >
   <bones >
-    <bone name="leg.R" id="0" >
+    <bone id="0" name="leg.R" >
       <position x="0.110703" y="0.540609" z="-0.000000" />
       <rotation angle="3.141593" >
         <axis x="0.707108" y="-0.000000" z="0.707106" />
       </rotation>
     </bone>
-    <bone name="leg.L" id="1" >
+    <bone id="1" name="leg.L" >
       <position x="-0.114274" y="0.540609" z="0.000000" />
       <rotation angle="3.141593" >
         <axis x="0.707108" y="-0.000000" z="0.707106" />
       </rotation>
     </bone>
-    <bone name="spine" id="2" >
+    <bone id="2" name="spine" >
       <position x="-0.000000" y="0.649460" z="0.000000" />
       <rotation angle="1.570792" >
         <axis x="0.000000" y="-1.000000" z="0.000000" />
       </rotation>
     </bone>
-    <bone name="arm.L" id="3" >
+    <bone id="3" name="arm.L" >
       <position x="-0.000000" y="0.762790" z="0.285685" />
       <rotation angle="3.141592" >
         <axis x="1.000000" y="0.000000" z="-0.000000" />
       </rotation>
     </bone>
-    <bone name="arm.R" id="4" >
+    <bone id="4" name="arm.R" >
       <position x="0.000000" y="0.762789" z="-0.289257" />
       <rotation angle="3.141592" >
         <axis x="1.000000" y="-0.000000" z="0.000000" />
       </rotation>
     </bone>
-    <bone name="head" id="5" >
+    <bone id="5" name="head" >
       <position x="-0.000000" y="1.474253" z="0.000000" />
       <rotation angle="1.570792" >
         <axis x="0.000000" y="-1.000000" z="0.000000" />
@@ -42,7 +42,7 @@
     <boneparent bone="arm.R" parent="spine" />
   </bonehierarchy>
   <animations >
-    <animation name="Walk" length="2.0" >
+    <animation length="2.0" name="Walk" >
       <tracks >
         <track bone="leg.R" >
           <keyframes >
@@ -2128,7 +2128,7 @@
         </track>
       </tracks>
     </animation>
-    <animation name="Idle" length="2.0" >
+    <animation length="2.0" name="Idle" >
       <tracks >
         <track bone="leg.R" >
           <keyframes >
