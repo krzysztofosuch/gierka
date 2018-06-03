@@ -6,6 +6,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -16,6 +17,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 /**
@@ -24,7 +26,7 @@ import java.util.Random;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
-    public static final int mobs_number = 6;
+    public static final int mobs_number = 10;
     Random randomizer = new Random();
     SceneManager scene;
     public static void main(String[] args) {
@@ -32,9 +34,11 @@ public class Main extends SimpleApplication {
         app.start();
     }
 
-    Spatial map;
     List<Enemy> oponents;
     Character character;
+    
+    DirectionalLight activeLight;
+    private List<Wall> mapElements;
     
     @Override
     public void simpleInitApp() {
@@ -51,12 +55,15 @@ public class Main extends SimpleApplication {
         inputManager.addListener(new MovementInputListener(character), "Left", "Right", "Up", "Down");
         inputManager.addListener(new ActionInputListener(character), "Attack", "Attack2");
         
-        map = assetManager.loadModel("Models/Mapka.mesh.xml");
-        map.rotate((float)Math.PI, 0, 0);
         Material m = mat.clone();
-        map.setMaterial(m);
+        mapElements = new MapGenerator(20, 20).generateMap();
+        for (Wall wall : mapElements) {
+            Spatial field = wall.getSpatial();
+            field.setMaterial(mat);
+            rootNode.attachChild(field);
+        }
         
-        rootNode.attachChild(map);
+
         for (int i = 0;i<mobs_number;i++) {
             Enemy o = new Enemy(assetManager);
             o.model = assetManager.loadModel(o.modelPath);
@@ -71,11 +78,15 @@ public class Main extends SimpleApplication {
         DirectionalLight sun = new DirectionalLight();
         sun.setColor(ColorRGBA.White);
         sun.setDirection(new Vector3f(-.5f,-.5f,-.5f).normalizeLocal());
+        rootNode.addLight(sun);
         DirectionalLight sun2 = new DirectionalLight();
-        sun2.setColor(ColorRGBA.White);
-        sun2.setDirection(new Vector3f(.5f,.5f,.5f).normalizeLocal());
-        com.jme3.light.Light light = new DirectionalLight();
-        rootNode.addLight(light);
+        sun.setColor(ColorRGBA.White);
+        sun.setDirection(new Vector3f(.5f,.5f,.5f).normalizeLocal());
+        rootNode.addLight(sun2);
+        
+        AmbientLight ambient = new AmbientLight();
+        ambient.setColor(new ColorRGBA(0.5f, 0.5f, 0.5f, 0.5f));
+        rootNode.addLight(ambient);
 
         
         
@@ -91,7 +102,7 @@ public class Main extends SimpleApplication {
             Spatial player = character.getModel();
             player.move(inputVector.mult(character.walkSpeed*tpf));
             player.lookAt(player.getWorldTranslation().add(character.getLookingVector()), new Vector3f(0, 1, 0));
-            getCamera().setLocation(player.getWorldTranslation().add(new Vector3f(5, 2.5f, 0)));
+            getCamera().setLocation(player.getWorldTranslation().add(new Vector3f(5, 4f, 0.2f)));
             getCamera().lookAt(player.getWorldTranslation(), new Vector3f(0, 1, 0));
 
             scene.updateActiveElements(tpf);
@@ -102,6 +113,7 @@ public class Main extends SimpleApplication {
                     if (!attack.isHamless()) {
                         Spatial s = attack.getSpatial();
                         s.move(attack.getVelocity().mult(tpf));
+                        collideWithWalls(attack);
                     }
                 }
             }
@@ -116,12 +128,10 @@ public class Main extends SimpleApplication {
                 }
                 
 
-                for (SceneElement a : character.getAttacks()){
+                for (SceneElement a : character.getAttacks()) {
                     if (a instanceof HitSceneElement) {
                         HitSceneElement attack = (HitSceneElement)a;
                         if (!attack.isHamless()) {
-                          //  Spatial s = attack.getSpatial();
-                           // s.move(attack.getVelocity().mult(tpf));
                             CollisionResults collision = new CollisionResults();
                             attack.getSpatial().collideWith(enemy.model.getWorldBound(), collision);
                             if (collision.size() > 0) {
@@ -134,18 +144,40 @@ public class Main extends SimpleApplication {
                                         rootNode.detachChild(enemy.model);
                                     }
                                 }
-
                             }
+
                         }
                     }
                 }
             }
         } catch (NullPointerException e) {
             System.out.println("NPE");
+            throw e;
         }
         
     }
-
+    private void collideWithWalls(HitSceneElement attack) {
+        List<Wall> wallsToRemove = null;
+        for (Wall w : mapElements) {
+            Spatial s = w.getSpatial();
+            CollisionResults collision = new CollisionResults();
+            attack.getSpatial().collideWith(s.getWorldBound(), collision);
+            if (collision.size() > 0) {
+                attack.setHarmless();
+                attack.setTTL(.1f);
+                if (w.isDestructable()) {
+                    if (wallsToRemove == null) {
+                        wallsToRemove = new LinkedList<>();
+                    }
+                    wallsToRemove.add(w);
+                    rootNode.detachChild(s);
+                }
+            }
+        }
+        if (wallsToRemove != null && wallsToRemove.size() > 0) {
+            mapElements.removeAll(wallsToRemove);
+        }
+    }
     @Override
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
