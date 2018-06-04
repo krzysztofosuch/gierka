@@ -39,7 +39,6 @@ public class Main extends SimpleApplication {
     
     DirectionalLight activeLight;
     private List<Wall> mapElements;
-    
     @Override
     public void simpleInitApp() {
         scene = new SceneManager(assetManager, rootNode);
@@ -101,6 +100,7 @@ public class Main extends SimpleApplication {
             Vector3f inputVector = character.movementState.getInputVector();
             Spatial player = character.getModel();
             player.move(inputVector.mult(character.walkSpeed*tpf));
+            
             player.lookAt(player.getWorldTranslation().add(character.getLookingVector()), new Vector3f(0, 1, 0));
             getCamera().setLocation(player.getWorldTranslation().add(new Vector3f(5, 4f, 0.2f)));
             getCamera().lookAt(player.getWorldTranslation(), new Vector3f(0, 1, 0));
