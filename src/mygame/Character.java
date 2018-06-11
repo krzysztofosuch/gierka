@@ -31,6 +31,7 @@ public class Character extends SceneNode implements AnimEventListener {
     public float walkSpeed = 2f;
     public MovementState movementState;
     private final LastValueHolder<Vector3f> lookingVectorHolder;
+    private Vector3f lookingVector;
     private final ArrayList<SceneElement> attacks;
     Spatial model;
     public Character(SceneManager sm) {
@@ -56,7 +57,15 @@ public class Character extends SceneNode implements AnimEventListener {
         //return scene.getRootNode();
     }
     public Vector3f getLookingVector() {
-        return lookingVectorHolder.getValue(movementState.getInputVector());
+        Vector3f requestedLookingVector = lookingVectorHolder.getValue(movementState.getInputVector());
+        if (lookingVector == null) {
+            lookingVector = requestedLookingVector;
+            return requestedLookingVector;
+        } else {
+            Vector3f newLookingVector = ConstantSpeedVectorTransition.translate(lookingVector, requestedLookingVector, 0.1f);
+            lookingVector = newLookingVector;
+            return newLookingVector;
+        }
     }
     
     @Override

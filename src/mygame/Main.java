@@ -3,6 +3,7 @@ package mygame;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
@@ -10,6 +11,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
@@ -27,6 +29,7 @@ import java.util.Random;
  */
 public class Main extends SimpleApplication {
     public static final int mobs_number = 10;
+    public static final float WallCollisionDistance = .15f;
     Random randomizer = new Random();
     SceneManager scene;
     public static void main(String[] args) {
@@ -93,13 +96,36 @@ public class Main extends SimpleApplication {
         
     }
 
-    
+
     @Override
     public void simpleUpdate(float tpf) {
         try {
+            boolean collided = false;
             Vector3f inputVector = character.movementState.getInputVector();
             Spatial player = character.getModel();
-            player.move(inputVector.mult(character.walkSpeed*tpf));
+            Ray playerCollisionRay = new Ray(player.getLocalTranslation(), inputVector);
+            playerCollisionRay.setLimit(WallCollisionDistance);
+            for (Wall w : mapElements) {
+                CollisionResults results = new CollisionResults();
+                w.getSpatial().collideWith(playerCollisionRay, results);
+                if (results.size()>0){
+                    CollisionResult c = results.getClosestCollision();
+                    if (c.getDistance() < WallCollisionDistance) {
+                        collided = true;
+                        System.out.print("Collided STH FUCKIN CLOSE\n");
+                        Vector3f collisionVector = c.getContactNormal();
+                        System.out.printf("COL: x: %s y: %s z:%s\n", collisionVector.x, collisionVector.y, collisionVector.z);
+                        System.out.printf("IMP: x: %s y: %s z:%s\n", inputVector.x, inputVector.y, inputVector.z);
+                        inputVector = inputVector.add(collisionVector);
+                        System.out.printf("AFT: x: %s y: %s z:%s\n", inputVector.x, inputVector.y, inputVector.z);
+                    }
+                }
+            }
+            Vector3f moveVector = inputVector.mult(character.walkSpeed*tpf);
+            if (collided) {
+                System.out.printf("MOV: x: %s y: %s z:%s\n", moveVector.x, moveVector.y, moveVector.z);
+            }
+            player.move(moveVector);
             
             player.lookAt(player.getWorldTranslation().add(character.getLookingVector()), new Vector3f(0, 1, 0));
             getCamera().setLocation(player.getWorldTranslation().add(new Vector3f(5, 4f, 0.2f)));
